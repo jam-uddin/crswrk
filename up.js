@@ -11,6 +11,7 @@ const s3Client = new S3Client({
   region:"fr-par-1",
   credentials:credentials
 })
+
 const params ={
   Bucket: "jamal",
   Key: "fileThis.txt",
@@ -18,8 +19,13 @@ const params ={
   ACL: 'public-read'
 };
 
-const uploadObject = async(params)=>{
-
+export const uploadObject = async(name, data)=>{
+  const params ={
+    Bucket: "jamal",
+    Key: name,
+    Body: data,
+    ACL: 'public-read'
+  };
     const results = await s3Client.send(new PutObjectCommand(params));
     console.log(
       "Successfully created" +
