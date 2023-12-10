@@ -1,8 +1,12 @@
-import { express } from 'expnress';
-import path from 'path'
-import fileUpload from "express-fileupload"
+import express from 'express';
+import path from 'path';
+import fileUpload from 'express-fileupload';
 import{ PutObjectCommand, DeleteObjectCommand, S3Client, ListObjectsCommand} from "@aws-sdk/client-s3";
 import fs from "fs"
+
+const app = express()
+app.use(fileUpload());
+const port = 3000
 
 const credentials ={
   accessKeyId:"Y0DYAUAO53TE8KL29254",
@@ -22,7 +26,8 @@ export const uploadObject = async(name, data)=>{
     Body: data,
     ACL: 'public-read'
   };
-    const results = await s3Client.send(new PutObjectCommand(params));
+
+  const results = await s3Client.send(new PutObjectCommand(params));
     console.log(
       "Successfully created" +
       params.Key +
@@ -33,18 +38,13 @@ export const uploadObject = async(name, data)=>{
     );
 };
 
-const app = express()
-app.use(fileupload());
-const port = 3000
-
 app.get('/', (req, res) => {
-  res.sendFile("index.html", {root: path.join(__dirname)})
-})
+  res.sendFile("index.html", { root: path.join("./") });
+});
 
 app.post('/upload', (req, res) => {
-  //console.log(req.files.file)
   uploadObject(req.files.file.name, req.files.file.data)
-  res.send("done")
+  res.send("Your file has been successfully uploaded ")
 })
 
 app.listen(port, () => {
