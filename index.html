@@ -36,6 +36,7 @@
                 <a class="nav-link disabled" aria-disabled="true">Disabled</a>
               </li>
             </ul>
+            <button class="btn btn-outline-danger" type="button" id="logoutButton" style="display:none;" onclick="logout()">Logout</button>
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
@@ -43,17 +44,120 @@
           </div>
         </div>
       </nav>
-    <div class="containter"></div>
+    
+      <div class="container my-4">
+        <!-- Login Form -->
+        <div id="loginSection">
+          <h2>Login</h2>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="loginEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </div>
+    
+        <!-- Registration Form -->
+        <div id="registerSection">
+          <h2>Register</h2>
+          <form id="registerForm">
+            <div class="mb-3">
+              <label for="registerEmail" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="registerEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="registerPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="registerPassword" required>
+            </div>
+            <button type="submit" class="btn btn-success">Register</button>
+          </form>
+        </div>
+      </div>
+    
+      <!-- Upload Section, initially hidden -->
+      <div class="container my-4" id="uploadSection" style="display:none;">
         <form action="/upload" method="post" enctype="multipart/form-data">
           <input type="file" name="file" id="file">
           <input type="submit" value="Submit">
         </form>
         <h2>Your Files</h2>
-        <ul class="files">
-
-        </ul>
+        <ul class="files"></ul>
       </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+      <script>
+        // Simple user "database" for demonstration purposes
+        const users = [];
+    
+        // DOM elements
+        const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+        const uploadSection = document.getElementById('uploadSection');
+        const logoutButton = document.getElementById('logoutButton');
+    
+        // Show/hide sections based on login state
+        function showHideSections() {
+          if (localStorage.getItem('loggedIn')) {
+            loginSection.style.display = 'none';
+            registerSection.style.display = 'none';
+            uploadSection.style.display = 'block';
+            logoutButton.style.display = 'inline-block'; // Show the logout button
+          } else {
+            loginSection.style.display = 'block';
+            registerSection.style.display = 'block';
+            uploadSection.style.display = 'none';
+            logoutButton.style.display = 'none'; // Hide the logout button
+          }
+        }
+    
+        // Logout function
+        function logout() {
+          localStorage.removeItem('loggedIn');
+          showHideSections();
+          window.location.href = '#'; // Navigate to the home page or refresh
+        }
+    
+        // Handle login
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const email = document.getElementById('loginEmail').value;
+          const password = document.getElementById('loginPassword').value;
+          const user = users.find(u => u.email === email && u.password === password);
+          if (user) {
+            localStorage.setItem('loggedIn', 'true');
+            showHideSections();
+          } else {
+            alert('Invalid credentials');
+          }
+        });
+    
+        // Handle registration
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const email = document.getElementById('registerEmail').value;
+          const password = document.getElementById('registerPassword').value;
+          const userExists = users.some(u => u.email === email);
+          if (userExists) {
+            alert('User already exists');
+          } else {
+            users.push({ email, password });
+            alert('Registration successful');
+            // Clear form fields
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            // Optionally, hide the registration form
+            registerSection.style.display = 'none';
+          }
+        });
+    
+        // Initialize sections on page load
+        showHideSections();
+      </script>
 <script> 
   const data = async ()=>{
     let url = "http://localhost:3000/files";
@@ -62,11 +166,21 @@
     console.log(response.files)
     let str = "";
     response.file.array.forEach(element => {
-      str = str + '<li><a href = "${element}" >${element}</a></li>'
+      str = str + `<li><a href="${element}">${element}</a></li>`;
     });
     document.querySelector("./files").innerHTML = str;
   }
   data()
+</script>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    console.log('Login form submitted');
+  });
+  document.getElementById('registerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    console.log('Registration form submitted');
+  });
 </script>
 </body>
 </html>
