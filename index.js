@@ -38,8 +38,28 @@ export const uploadObject = async(name, data)=>{
     );
 };
 
+const ListObjects = async()=>{
+
+  const results = await s3Client.send(new ListObjectsCommand({
+    Bucket: "jamal",
+    ACL: 'public-read'
+}));
+  console.log(results)
+  let links = []
+  for(let item of results.Contents){
+    links.push("https://cloud.linode.com/object-storage/buckets/fr-par-1/jamal" + item.Key)
+  }
+  return links
+}
+
 app.get('/', (req, res) => {
   res.sendFile("index.html", { root: path.join("./") });
+});
+
+app.get('/files', async (req, res) => {
+  let links = await ListObjects()
+  console.log(links)
+  res.json({"file": links})
 });
 
 app.post('/upload', (req, res) => {
