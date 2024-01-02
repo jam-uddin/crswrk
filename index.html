@@ -63,21 +63,31 @@
         </div>
     
         <!-- Registration Form -->
-        <div id="registerSection">
-          <h2>Register</h2>
-          <form id="registerForm">
-            <div class="mb-3">
-              <label for="registerEmail" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="registerEmail" required>
-            </div>
-            <div class="mb-3">
-              <label for="registerPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="registerPassword" required>
-            </div>
-            <button type="submit" class="btn btn-success">Register</button>
-          </form>
-        </div>
-      </div>
+<div id="registerSection">
+  <h2>Register</h2>
+  <form id="registerForm">
+    <div class="mb-3">
+      <label for="registerEmail" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" required>
+    </div>
+    <div class="mb-3">
+      <label for="registerPassword" class="form-label">Password</label>
+      <input type="password" class="form-control" id="registerPassword" required>
+    </div>
+    <!-- User Type Dropdown -->
+    <div class="mb-3">
+      <label for="userType" class="form-label">User Type</label>
+      <select class="form-select" id="userType" required>
+        <option value="">Select User Type</option>
+        <option value="student">Student</option>
+        <option value="business">Business</option>
+        <option value="photographer">Photographer</option>
+        <option value="normal">Normal</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-success">Register</button>
+  </form>
+</div>
     
       <!-- Upload Section, initially hidden -->
       <div class="container my-4" id="uploadSection" style="display:none;">
