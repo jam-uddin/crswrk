@@ -1,0 +1,53 @@
+html, body, ul, ol, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set basic styles for the body */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f0f8ff; /* Alice Blue */
+    color: #333; /* Dark grey text color */
+}
+
+/* Style for the navigation bar */
+.navbar {
+    background-color: #add8e6; /* Light Blue */
+    border-color: #add8e6;
+}
+
+.navbar a, .navbar-brand {
+    color: #000000; /* Black text for navbar links */
+}
+
+.navbar a:hover, .navbar-brand:hover {
+    color: #ff0000; /* Red text on hover */
+}
+
+/* Container styles */
+.container {
+    background-color: #ffffff; /* White background for content areas */
+    padding: 20px; /* Add some padding inside the container */
+}
+
+/* Style for form elements */
+input[type="file"] {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+input[type="submit"] {
+    background-color: #add8e6; /* Light Blue */
+    color: #fff;
+    border: 0;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Style for file list */
+.files li {
+    list-style-type: none;
+    color: #333; /* Dark grey text color */
+    padding: 5px 0;
+}

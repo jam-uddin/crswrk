@@ -3,49 +3,22 @@ import path from 'path';
 import fileUpload from 'express-fileupload';
 import { PutObjectCommand, DeleteObjectCommand, S3Client, ListObjectsCommand } from "@aws-sdk/client-s3";
 import fs from "fs"
-import { fileURLToPath } from 'url';
-import { OAuth2Client } from 'google-auth-library';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const app = express();
-const port = 3000;
+const app = express()
+app.use(fileUpload());
+const port = 3000
 app.use(express.static('public'));
 
-const credentials = {
-  accessKeyId: "Y0DYAUAO53TE8KL29254",
-  secretAccessKey: "3HBwAarUBaUOl8bWpNSYBXEvbBAXAzd4FzCktPoP"
-};
-
-async function verifyToken(token) {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-    });
-    const payload = ticket.getPayload();
-    return payload; // Contains user information and token details
-  }
-
-  app.post('/verifyGoogleToken', async (req, res) => {
-    try {
-      const { token } = req.body;
-      const googleUser = await verifyToken(token);
-      console.log("User Verified: ", googleUser);
-      // Proceed with user information if needed, e.g., creating session
-      res.json({ success: true, message: 'User verified', user: googleUser });
-    } catch (error) {
-      res.status(401).json({ success: false, message: 'Token verification failed', error: error.toString() });
-    }
-  });
+const credentials ={
+  accessKeyId:"Y0DYAUAO53TE8KL29254",
+  secretAccessKey:"3HBwAarUBaUOl8bWpNSYBXEvbBAXAzd4FzCktPoP"
+}
 
 const s3Client = new S3Client({
-  endpoint: "https://fr-par-1.linodeobjects.com",
-  region: "fr-par-1",
-  credentials: credentials
-});
-
-const CLIENT_ID = '619144172013-84eqpr97bl51t26bt4v442pho3fvnn2e.apps.googleusercontent.com';
-const client = new OAuth2Client(CLIENT_ID);
+  endpoint:"https://fr-par-1.linodeobjects.com",
+  region:"fr-par-1",
+  credentials:credentials
+})
 
 export const uploadObject = async (name, data) => {
   const params = {
@@ -80,7 +53,6 @@ const ListObjects = async () => {
 };
 
 
-
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -98,10 +70,9 @@ app.post('/upload', fileUpload(), (req, res) => {
   }
   uploadObject(req.files.file.name, req.files.file.data)
   res.send("Your file has been successfully uploaded ")
-});
-
-
+})
 
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`) 
-});
+  console.log(`Example app listening on port http//localhost:${port}`)
+})
+
