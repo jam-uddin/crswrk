@@ -2,8 +2,11 @@ import express from 'express';
 import path from 'path';
 import fileUpload from 'express-fileupload';
 import { PutObjectCommand, DeleteObjectCommand, S3Client, ListObjectsCommand } from "@aws-sdk/client-s3";
-import fs from "fs"
+import { fileURLToPath } from 'url';
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express()
 app.use(fileUpload());
 const port = 3000
@@ -75,4 +78,3 @@ app.post('/upload', fileUpload(), (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port http//localhost:${port}`)
 })
-
