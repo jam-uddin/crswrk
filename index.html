@@ -10,16 +10,16 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
-            background-color: #f0f8ff; /* Alice Blue */
+            background-color: #f0f8ff; 
         }
 
         .navbar, .btn-outline-success, .btn-primary, .btn-success {
-            background-color: #add8e6; /* Light Blue */
+            background-color: #add8e6;
             border-color: #add8e6;
         }
 
         .navbar a, .navbar-brand {
-            color: #000000; /* Black text for navbar links */
+            color: #000000; 
         }
 
         .navbar a:hover, .navbar-brand:hover {
@@ -104,7 +104,7 @@
      data-logo_alignment="left">
 </div>
     
-    <div id="signInContainer" style="display: none;"> <!-- Hide initially -->
+    <div id="signInContainer" style="display: none;"> 
       <div class="g_id_signin"
           data-type="standard"
           data-shape="pill"
@@ -115,7 +115,7 @@
       </div>
   </div>
 
-  <div id="fileUploadSection" class="container my-4" style="display: none;"> <!-- Hide initially -->
+  <div id="fileUploadSection" class="container my-4" style="display: none;"> 
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" id="file">
         <input type="submit" value="Submit">
@@ -189,7 +189,7 @@
           var auth2 = gapi.auth2.getAuthInstance();
           auth2.signOut().then(function () {
             console.log('User signed out.');
-            // Hide the file upload section and show the sign-in button again
+            
             document.getElementById('fileUploadSection').style.display = 'none';
             document.getElementById('signInContainer').style.display = 'flex';
           });
@@ -200,7 +200,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const fileListElement = document.querySelector('.files');
-                    fileListElement.innerHTML = ''; // Clear the current list
+                    fileListElement.innerHTML = ''; 
                     data.file.forEach(fileUrl => {
                         const li = document.createElement('li');
                         li.textContent = fileUrl;
@@ -239,12 +239,11 @@
 
         function handleCredentialResponse(response) {
             console.log("Encoded JWT ID token: " + response.credential);
-            // After successful sign-in, show the file upload section
+            
             document.getElementById('signInContainer').style.display = 'none';
             document.getElementById('fileUploadSection').style.display = 'block';
-            // You can also set up the logout button to show
             document.getElementById('logoutButton').style.display = 'block';
-            // Fetch files or any other sign-in dependent data
+            
             fetchFiles();
         }
 
@@ -259,10 +258,9 @@
                 { theme: "outline", size: "large" }
             );
 
-            google.accounts.id.prompt(); // Show the One Tap sign-in prompt
+            google.accounts.id.prompt(); 
         }
-        
-        // Fetch the list of files when the page loads
+
         fetchFiles();
     </script>
 

@@ -67,13 +67,19 @@ app.get('/files', async (req, res) => {
   res.json({ "file": links })
 });
 
-app.post('/upload', fileUpload(), (req, res) => {
+app.post('/upload', (req, res) => {
   if (!req.files || !req.files.file) {
     return res.status(400).send('No file was uploaded.');
   }
   uploadObject(req.files.file.name, req.files.file.data)
-  res.send("Your file has been successfully uploaded ")
-})
+    .then(() => {
+      res.redirect('/'); // Redirect to the main page
+    })
+    .catch((error) => {
+      console.error('Upload failed:', error);
+      res.status(500).send('Error uploading file.');
+    });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port http//localhost:${port}`)
